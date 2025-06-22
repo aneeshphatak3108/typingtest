@@ -27,5 +27,4 @@ function useTimer(start = false, duration = 60, onFinish = () => {}) {
 
   return timeleft;
 }
-
 export default useTimer;

@@ -1,21 +1,24 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const TARGET_TEXT = "The quick brown fox";
 
-function TypingBox({ setHasStarted , correct_char_count, set_correct_char_count, istimefinished}) {
-  const [userInput, setUserInput] = useState("");//userInput is a word that we will be building character by character after each key press
+function TypingBox({ setHasStarted , correct_char_count, set_correct_char_count, istimefinished, userInput, setUserInput, restartKey}) {
+  //const [userInput, setUserInput] = useState("");//userInput is a word that we will be building character by character after each key press
   const inputRef = useRef(null);
-
-  
   useEffect(() => {
     inputRef.current?.focus(); // focus on load
   }, []);
 
   useEffect(() => {
+    //for textbox to stop listening to keyboard pushdowns after time is finished
     if (istimefinished) {
       inputRef.current?.blur();
     }
-  }, [istimefinished])
+    //for the restart button
+    if (!istimefinished) {
+      inputRef.current?.focus();
+    }
+  }, [istimefinished, restartKey])
 
 
   /*questions to be asked on the optimisation latesr*/

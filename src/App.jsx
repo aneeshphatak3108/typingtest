@@ -21,25 +21,24 @@ function App() {
         />
       </div>
 
-      {/* Typing box centered in page */}
-      <div className="flex justify-center items-center h-[calc(100vh-120px)]">
-        <TypingBox setHasStarted={setHasStarted}
-        correct_char_count={correct_char_count}
-        set_correct_char_count={set_correct_char_count}
-        istimefinished={istimefinished}
-        />
-      </div>
+    {/*wrapping the typing box and wpm in one div*/}
+      <div className="flex flex-col items-center gap-4 h-[calc(100vh-120px)] justify-center">
+  {/* Typing box centered in page */}
+  <TypingBox
+    setHasStarted={setHasStarted}
+    correct_char_count={correct_char_count}
+    set_correct_char_count={set_correct_char_count}
+    istimefinished={istimefinished}
+  />
 
-      {istimefinished && (
-        <div className='flex justify-center mt-6'>
-          <div className="text-2xl font-semibold bg-white p-4 rounded-lg shadow-lg">
-          WPM: {(correct_char_count / 5).toFixed(2)}
-          </div>
-          </div>
-      )}
-
+  {/* WPM display */}
+  {istimefinished && (
+    <div className="text-2xl font-semibold bg-white p-4 rounded-lg shadow-lg">
+      WPM: {(correct_char_count / 5).toFixed(2)}
     </div>
-  );
+  )}
+</div>
+</div>
+ );
 }
-
 export default App

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 //duration hardcoded to be 1 min
-function useTimer(start = false, duration = 60) {
+//onFinish is not a standard keyword
+function useTimer(start = false, duration = 60, onFinish = () => {}) {
   const [timeleft, setTimeLeft] = useState(duration);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ function useTimer(start = false, duration = 60) {
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(interval); // stop when time reaches 0
+          onFinish();//call the passed in function which is going to make istimefinished to true
           return 0;
         }
         return prev - 1;

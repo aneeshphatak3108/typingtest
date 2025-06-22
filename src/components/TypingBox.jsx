@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 const TARGET_TEXT = "The quick brown fox";
 
-function TypingBox({ setHasStarted , correct_char_count, set_correct_char_count}) {
+function TypingBox({ setHasStarted , correct_char_count, set_correct_char_count, istimefinished}) {
   const [userInput, setUserInput] = useState("");//userInput is a word that we will be building character by character after each key press
   const inputRef = useRef(null);
 
@@ -10,6 +10,13 @@ function TypingBox({ setHasStarted , correct_char_count, set_correct_char_count}
   useEffect(() => {
     inputRef.current?.focus(); // focus on load
   }, []);
+
+  useEffect(() => {
+    if (istimefinished) {
+      inputRef.current?.blur();
+    }
+  }, [istimefinished])
+
 
   /*questions to be asked on the optimisation latesr*/
   const handleKeyDown = (e) => {
@@ -40,8 +47,8 @@ function TypingBox({ setHasStarted , correct_char_count, set_correct_char_count}
   return (
     <div
       ref={inputRef}
-      tabIndex={0}//to make the div element notice keyboard press
-      onKeyDown={handleKeyDown}
+      tabIndex={istimefinished ? -1 : 0}//to make the div element notice keyboard press
+      onKeyDown={istimefinished ? undefined : handleKeyDown}//so this is needed because, if after the timer ends, user clicks on the textbox, it will get focused again and handlekeydown will run, to avoid this we make the function to run after onkeydown as undefined
       className="w-[80vw] h-[50vh] border border-gray-400 p-6 rounded-lg shadow-xl outline-none focus:outline-blue-400 text-xl flex flex-wrap items-start"
     >
 
@@ -56,7 +63,7 @@ function TypingBox({ setHasStarted , correct_char_count, set_correct_char_count}
 
     {/* Blinking cursor at current char */}
     {index === userInput.length && (
-      <span className="absolute left-0 animate-blink w-[2px] h-6 bg-black"></span>
+      <span className="absolute left-0 animate-blink w-[2px] h-9 bg-black"></span>
     )}
     </span>
   ))}

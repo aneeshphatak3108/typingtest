@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TimerDisplay from './components/TimerDisplay'
 import TypingBox from './components/TypingBox'
 
@@ -9,6 +9,8 @@ function App() {
   const [correct_char_count, set_correct_char_count] = useState(0);
   const [istimefinished, set_istimefinished] = useState(false);
   const [restartKey, setRestartKey] = useState(0);
+  const [targetText, settargetText] = useState("");
+  const [char_count, set_char_count] = useState(0);
 
   //Restart Logic
   const handleRestart = () => {
@@ -19,9 +21,34 @@ function App() {
     setRestartKey(prev => prev+1);
   }
 
+  function fetchNewWords() {
+    fetch("https://random-word-api.herokuapp.com/word?number=10")
+    .then(res => res.json())
+    .then((data)=>{
+      settargetText(data.join(" "));
+    })
+    .catch((err)=>{
+      console.error("Failed to fetch words:", err);
+    })
+    console.log(targetText);
+  }
 
-  const wrong_char_count = userInput.length - correct_char_count;
-  const accuracy = userInput.length === 0 ? 0 : ((correct_char_count / userInput.length) * 100).toFixed(2);
+  //fetching new words when restart happens
+  useEffect(() => {
+    fetchNewWords();
+  }, [restartKey]
+)
+
+  //fetching new words when user types all current words in the typing box
+  useEffect(() => {
+    if (userInput.length === targetText.length && targetText.length > 0) {
+        setUserInput("")
+        fetchNewWords();
+    }
+  }, [userInput]);
+
+  const wrong_char_count = char_count - correct_char_count;
+  const accuracy = char_count === 0 ? 0 : ((correct_char_count / char_count) * 100).toFixed(2);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -44,6 +71,8 @@ function App() {
     userInput={userInput}
     setUserInput={setUserInput}
     restartKey={restartKey}
+    targetText={targetText}
+    set_char_count={set_char_count}
   />
 
   {/* WPM display */}

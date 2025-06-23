@@ -51,7 +51,7 @@ function App() {
   const accuracy = char_count === 0 ? 0 : ((correct_char_count / char_count) * 100).toFixed(2);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-sky-50">
       {/* Timer at the top center */}
       <div className="flex justify-center py-6">
         <TimerDisplay start={hasStarted}
@@ -61,7 +61,7 @@ function App() {
       </div>
 
     {/*wrapping the typing box and wpm in one div*/}
-      <div className="flex flex-col items-center gap-4 h-[calc(100vh-120px)] justify-center">
+      <div className="flex flex-col items-center gap-4 h-[calc(100vh-120px)] justify-center bg-white">
   {/* Typing box centered in page */}
   <TypingBox
     setHasStarted={setHasStarted}

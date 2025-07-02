@@ -1,25 +1,41 @@
 import { useState } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 function Login() {
     const [username, setUsername] = useState("");
+    const location = useLocation();
+    const scoreToSave = location.state?.score || null;
     const [passwd, setPasswd] = useState("");
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:5000/api/login', {
-            username: username,
-            password:passwd
-        }, {
-            withCredentials: true
-        })
-        .then(response => {
-            alert(`Successfully logged in as ${username}`);
-        })
-        .catch(error => {
-            alert(error.response?.data?.message || error.message);
-        })
-    }
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await axios.post('http://localhost:5000/api/login', {
+          "username": username, 
+          "password": passwd
+        }, { withCredentials: true });
+    
+        if (scoreToSave) {
+          try {
+            await axios.post('http://localhost:5000/api/savescore', scoreToSave, {
+              withCredentials: true
+            });
+            alert("Score saved successfully after login!");
+          } catch (err) {
+            alert("Logged in, but score couldn't be saved.");
+          }
+        }
+        // Redirect after login
+        navigate('/');
+      } catch (error) {
+        alert(error.response?.data?.message || "Login failed");
+      }
+    };
+    
 
     return (
         <div className="min-h-screen bg-blue-50 flex items-center justify-center">

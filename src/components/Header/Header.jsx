@@ -1,6 +1,22 @@
 import { NavLink } from 'react-router-dom'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await axios.post('http://localhost:5000/api/logout', {}, {
+        withCredentials: true
+      });
+    alert("Successfully logged out");
+    navigate("/");
+    } catch (err) {
+      alert(err.response?.data?.message || "Logout failed");
+    }
+  };
+  
   return (
     <header className="bg-blue-100 shadow-md py-4">
       <nav className="max-w-5xl mx-auto px-4">
@@ -56,14 +72,9 @@ function Header() {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/logout"
-              className={({ isActive }) =>
-                isActive ? "text-blue-700 font-semibold" : "text-gray-700 hover:text-blue-600"
-              }
-            >
-              Logout
-            </NavLink>
+              <button onClick={handleLogout} className= "text-gray-700 hover:text-blue-600">
+                Logout
+              </button>
           </li>
         </ul>
       </nav>

@@ -7,7 +7,6 @@ import Signup from './components/Signup/Signup.jsx'
 import Login from './components/Login/Login.jsx'
 import Selfanalysis from './components/Selfanalysis/Selfanalysis.jsx'
 import Leaderboard from './components/Leaderboard/Leaderboard.jsx'
-import Logout from './components/Logout/Logout.jsx'
 import './index.css'
 import App from './App.jsx'
 
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
         path: "leaderboard",
         element: <Leaderboard />
       },
-      {
-        path: "logout",
-        element: <Logout />
-      }
     ]
   }
 ])

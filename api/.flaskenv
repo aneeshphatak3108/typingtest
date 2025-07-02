@@ -1,1 +1,2 @@
 FLASK_APP=typingtest.py
+FLASK_ENV=development

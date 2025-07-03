@@ -5,6 +5,17 @@ from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from datetime import datetime
 
+@app.route("/api/pingdb")
+def ping_db():
+    try:
+        db = get_db()
+        db.command("ping")
+        return jsonify({"ok": 1}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
 @app.route('/api/signup', methods=['POST'])
 def signup():
     data = request.json

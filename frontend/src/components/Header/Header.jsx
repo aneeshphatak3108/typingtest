@@ -1,13 +1,14 @@
 import { NavLink } from 'react-router-dom'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Header() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/logout', {}, {
+      await axios.post(`${apiUrl}api/logout`, {}, {
         withCredentials: true
       });
     alert("Successfully logged out");

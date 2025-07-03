@@ -1,13 +1,15 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
+
 function Selfanalysis() {
     const [maxscore, setMaxscore] = useState(null);
     const [scores, setScores] = useState([]);
 
     const handleAnalysis = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/selfanalysis', {withCredentials : true});
+            const response = await axios.get(`${apiUrl}api/selfanalysis`, {withCredentials : true});
             setMaxscore(response.data.maxscore);
             setScores(response.data.scores);
         }

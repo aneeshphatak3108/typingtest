@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router-dom";
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
+
 
 
 function Login() {
@@ -14,14 +16,14 @@ function Login() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await axios.post('http://localhost:5000/api/login', {
+        await axios.post(`${apiUrl}api/login`, {
           "username": username, 
           "password": passwd
         }, { withCredentials: true });
     
         if (scoreToSave) {
           try {
-            await axios.post('http://localhost:5000/api/savescore', scoreToSave, {
+            await axios.post(`${apiUrl}api/savescore`, scoreToSave, {
               withCredentials: true
             });
             alert("Score saved successfully after login!");

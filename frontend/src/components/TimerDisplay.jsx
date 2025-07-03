@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import useTimer from "../hooks/useTimer";
 
 function TimerDisplay({ start, istimefinished,  set_istimefinished}) {
-  const timeleft = useTimer(start, 60, () => {
+  const timeleft = useTimer(start, 5, () => {
     set_istimefinished(true);
   }); // start is true/false
   return (

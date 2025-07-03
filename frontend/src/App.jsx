@@ -3,6 +3,7 @@ import TimerDisplay from './components/TimerDisplay'
 import TypingBox from './components/TypingBox'
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
       accuracy: accuracy
     }
     try {
-      await axios.post('http://localhost:5000/api/savescore', scoreData, { withCredentials: true});
+      await axios.post(`${apiUrl}api/savescore`, scoreData, { withCredentials: true});
       setIsScoreSaved(true);
       alert("Scored saved successfully");
     }

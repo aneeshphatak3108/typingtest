@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Signup() {
     const [username, setUsername] = useState("");
@@ -13,7 +14,7 @@ function Signup() {
             return;
         }
 
-        axios.post('http://localhost:5000/api/signup', {
+        axios.post(`${apiUrl}api/signup`, {
             username: username,
             password:passwd
         })

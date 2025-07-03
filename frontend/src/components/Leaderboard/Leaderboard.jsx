@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Leaderboard() {
     const [topUsers, setTopUsers] = useState([]);
@@ -8,7 +9,7 @@ function Leaderboard() {
     //response is a list of dictionaries each containing fields "username", "score", "accuracy", "timestamp"
     const handleLeaderBoard = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/leaderboard');
+            const response = await axios.get(`${apiUrl}api/leaderboard`);
             setTopUsers(response.data.leaderboard_data);
         }
         catch(error) {

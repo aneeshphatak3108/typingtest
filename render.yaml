@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: typingtest-backend
+    env: python
+    buildCommand: ""
+    startCommand: "python api/typingtest.py"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.8
+      - key: FLASK_ENV
+        value: production

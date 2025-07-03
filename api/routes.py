@@ -1,4 +1,4 @@
-from api.models import users_collection, scores_collection
+from api.models import get_db, get_users_collection, get_scores_collection
 from api import app
 from flask import request, jsonify, session
 from werkzeug.security import generate_password_hash
@@ -11,6 +11,8 @@ def signup():
     username = data["username"]
     password = data["password"]
     hashed_password = generate_password_hash(password)
+    users_collection = get_users_collection()
+    scores_collection = get_scores_collection()
     if (users_collection.find_one({"username":username})):
         return jsonify({"message": "username already exists"}), 400
     users_collection.insert_one(

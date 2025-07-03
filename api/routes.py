@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from datetime import datetime
 
+#for testing purposes
 @app.route("/api/pingdb")
 def ping_db():
     try:
@@ -47,6 +48,7 @@ def login():
     data = request.json
     username = data["username"]
     password = data["password"]
+    users_collection = get_users_collection()
     record = users_collection.find_one({"username":username})
     if not record:
         return jsonify({"message":"No such user exists"}), 404
@@ -68,6 +70,7 @@ def selfanalysis():
     if "username" not in session:
         return jsonify({"message" :"Unauthorized"}), 401
     username = session["username"]
+    scores_collection = get_scores_collection()
     record = scores_collection.find_one({"username":username})
     if not record:
         return jsonify({"message":"Could not find record"})
@@ -79,6 +82,8 @@ def selfanalysis():
 
 @app.route('/api/leaderboard', methods=['GET'])
 def leaderboard():
+    scores_collection = get_scores_collection()
+    users_collection = get_users_collection()
     pipeline = [
         {"$unwind": "$scores"},#Flatten scores array
         {"$project": {
@@ -111,7 +116,8 @@ def leaderboard():
 def savescore():
     if "username" not in session:
         return jsonify({"message": "Unauthorized"}), 401
-
+    users_collection = get_users_collection()
+    scores_collection = get_scores_collection()
     data = request.json
     score = float(data.get("score"))
     accuracy = float(data.get("accuracy"))

@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash
 
 app = Flask(__name__)
 app.config.from_object(Config)#Load all the attributes from the Config class into the Flask app’s configuration dictionary
-CORS(app, supports_credentials=True)
+#CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=["https://druttyping.vercel.app"])
 
 from api import routes #to avoid circular import

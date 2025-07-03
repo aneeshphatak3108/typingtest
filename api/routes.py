@@ -1,4 +1,4 @@
-from api.models import get_db, get_users_collection, get_scores_collection
+from api.models import users_collection, scores_collection
 from api import app
 from flask import request, jsonify, session
 from werkzeug.security import generate_password_hash
@@ -6,6 +6,7 @@ from werkzeug.security import check_password_hash
 from datetime import datetime
 
 #for testing purposes
+"""
 @app.route("/api/pingdb")
 def ping_db():
     try:
@@ -14,7 +15,7 @@ def ping_db():
         return jsonify({"ok": 1}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+"""
 
 
 @app.route('/api/signup', methods=['POST'])
@@ -23,8 +24,8 @@ def signup():
     username = data["username"]
     password = data["password"]
     hashed_password = generate_password_hash(password)
-    users_collection = get_users_collection()
-    scores_collection = get_scores_collection()
+    #users_collection = get_users_collection()
+    #scores_collection = get_scores_collection()
     if (users_collection.find_one({"username":username})):
         return jsonify({"message": "username already exists"}), 400
     users_collection.insert_one(
@@ -48,7 +49,7 @@ def login():
     data = request.json
     username = data["username"]
     password = data["password"]
-    users_collection = get_users_collection()
+    #users_collection = get_users_collection()
     record = users_collection.find_one({"username":username})
     if not record:
         return jsonify({"message":"No such user exists"}), 404
@@ -70,7 +71,7 @@ def selfanalysis():
     if "username" not in session:
         return jsonify({"message" :"Unauthorized"}), 401
     username = session["username"]
-    scores_collection = get_scores_collection()
+    #scores_collection = get_scores_collection()
     record = scores_collection.find_one({"username":username})
     if not record:
         return jsonify({"message":"Could not find record"})
@@ -82,8 +83,8 @@ def selfanalysis():
 
 @app.route('/api/leaderboard', methods=['GET'])
 def leaderboard():
-    scores_collection = get_scores_collection()
-    users_collection = get_users_collection()
+    #scores_collection = get_scores_collection()
+    #users_collection = get_users_collection()
     pipeline = [
         {"$unwind": "$scores"},#Flatten scores array
         {"$project": {
@@ -116,8 +117,8 @@ def leaderboard():
 def savescore():
     if "username" not in session:
         return jsonify({"message": "Unauthorized"}), 401
-    users_collection = get_users_collection()
-    scores_collection = get_scores_collection()
+    #users_collection = get_users_collection()
+    #scores_collection = get_scores_collection()
     data = request.json
     score = float(data.get("score"))
     accuracy = float(data.get("accuracy"))
